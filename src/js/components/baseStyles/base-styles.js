@@ -2,14 +2,8 @@ import { injectGlobal } from 'styled-components'
 import reset from 'styled-reset'
 
 import OpenSansBold from '../../../fonts/OpenSans-Bold.ttf';
-import OpenSansSemiBold from '../../../fonts/OpenSans-SemiBold.ttf';
 
-const baseStyles = () => injectGlobal`
-  @font-face {
-    font-family: OpenSans;
-    src: url('${OpenSansSemiBold}') format('truetype');
-  }
-  
+const baseStyles = () => injectGlobal`  
   @font-face {
     font-family: OpenSans;
     src: url('${OpenSansBold}') format('truetype');
@@ -19,6 +13,15 @@ const baseStyles = () => injectGlobal`
   ${reset}
   body, html, #root {
     height: 100%;  
+  }
+  
+  body {
+    font-family: OpenSans sans-serif;
+    font-weight: bold;
+    
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
 `;
 

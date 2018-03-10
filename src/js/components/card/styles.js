@@ -9,22 +9,32 @@ const getCardDisplayStyle = status => {
 };
 
 const getCardShirtDisplayStyle = status => {
-  console.log(status);
   if (status === 'opened' || status === 'completed') {
-    return 'none'
+    return 'hidden'
   } else if (status === 'closed') {
-    return 'block';
+    return 'visible';
   }
 };
 
-export const CardShirt = styled.img`
-  display: ${props => getCardShirtDisplayStyle(props.status)};
+export const CardWrapper = styled.div`
+  position: relative;
+`;
+
+export const CardShirt = styled.img.attrs({
+  'data-tid': 'Card-flipped',
+})`
+  visibility: ${props => getCardShirtDisplayStyle(props.status)};
   width: 100%;
   height: auto;
 `;
 
-export const CardImage  = styled.img`
-  display: ${props => props.status === 'opened' ? 'block' : 'none'};
+export const CardImage  = styled.img.attrs({
+  'data-tid': 'Card',
+})`
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: ${props => getCardDisplayStyle(props.status)};
   width: 100%;
   height: auto;
 `;

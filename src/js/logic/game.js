@@ -18,7 +18,7 @@ export interface IGame {
   getCardsStatus(): TCardState;
   getScore(): number;
   closeAllCards(): void;
-  __setNewStatusToAllCards(nhewStatus: TCardStatus): void;
+  __setNewStatusToAllCards(newStatus: TCardStatus): void;
   __pairCompleted(): void;
   __pairFailed(): void;
   openCard(cardName: string, cardIndex: number): void;

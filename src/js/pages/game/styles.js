@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {numberOfCardsInRow} from '../../commons/globalParams';
 
 const bottomMargin = 30;
 export const Header = styled.div`
@@ -12,18 +13,26 @@ export const Header = styled.div`
 `;
 
 const gap = 20;
-const numberOfColumns = 6;
 
 export const GameField = styled.div`
   display: grid;    
-  grid-template-columns: repeat(${numberOfColumns}, 1fr);
+  grid-template-columns: repeat(${numberOfCardsInRow}, 1fr);
   grid-row-gap: ${gap}px;
   grid-column-gap: ${gap}px;
 `;
 
-export const Wrapper = styled.div` 
+export const HeaderText = styled.div.attrs({
+  'data-tid': 'Menu-newGame',
+})`
+  font-weight: normal;
+  cursor: pointer;
+`;
+
+export const Wrapper = styled.div.attrs({
+  'data-tid': "Deck",
+})` 
   height: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: column; 
   justify-content: center;    
 `;

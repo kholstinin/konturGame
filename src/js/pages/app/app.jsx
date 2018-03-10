@@ -28,8 +28,7 @@ class App extends React.Component<AppProps, AppState> {
                 <StartPage onStartGameClick={this.startGame}/> :
                 null}
             {route === 'game' ?
-                <GamePage onTryAgainClick={this.startGame}
-                          score={score}
+                <GamePage score={score}
                           setScore={this.setScore}
                           endGame={this.endGame}
                 /> : null}
@@ -42,16 +41,16 @@ class App extends React.Component<AppProps, AppState> {
     );
   }
 
-  setScore(score: number) {
-    this.setState({score})
-  }
-
-  startGame = () => {
-    this.setState({route: 'game'});
+  setScore = (score: number) => {
+    this.setState({score});
   };
 
-  endGame = () => {
-    this.setState({route: 'end'});
+  startGame = () => {
+    this.setState({route: 'game', score: 0});
+  };
+
+  endGame = (finalScore: number) => {
+    this.setState({route: 'end', score: finalScore});
   };
 }
 

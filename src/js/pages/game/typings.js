@@ -2,10 +2,9 @@
 import type {TCardState} from '../../commons/commonTypings';
 
 export type GamePageProps = {
-  onTryAgainClick: () => void,
   score: number,
   setScore: (newScore: number) => void,
-  endGame: () => void,
+  endGame: (finalScore: number) => void,
 };
 
 export type GamePageState = {

@@ -2,14 +2,17 @@
 import type {GamePageProps, GamePageState} from './typings';
 
 import React from 'react';
-import {Header, GameField, Wrapper} from './styles';
+import {Header, HeaderText, GameField, Wrapper} from './styles';
 import Card from '../../components/card/card.jsx';
 
-import {IGame} from '../../logic/game'
+import {cardDisplayTimeInMs} from '../../commons/globalParams';
+
+import {IGame} from '../../logic/game';
 import Game from '../../logic/game';
 
 class GamePage extends React.Component<GamePageProps, GamePageState> {
   game: IGame;
+  timerId: TimeoutID;
 
   constructor() {
     super();
@@ -20,16 +23,15 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
       cardsStatus: this.game.getCardsStatus(),
     };
 
-    const cardDisplayTimeInMs = 5000;
-    setTimeout(this.closeAllCards, cardDisplayTimeInMs)
+    this.timerId = setTimeout(this.closeAllCards, cardDisplayTimeInMs);
   }
 
   render() {
     return (
         <Wrapper>
           <Header>
-            <div onClick={this.props.onTryAgainClick}>Начать заново</div>
-            <div>Очки: {this.props.score}</div>
+              <HeaderText onClick={this.restartGame}>Начать заново</HeaderText>
+            <div data-tid='Menu-scores'>Очки: {this.props.score}</div>
           </Header>
           <GameField>
             {this.state.cards.map((cardName, index) =>
@@ -46,16 +48,18 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
 
   openCard = (cardName: string, cardIndex: number) => {
     this.game.openCard(cardName, cardIndex);
+    const newScore = this.game.getScore();
 
     this.setState({
       cards: this.game.getCards(),
       cardsStatus: this.game.getCardsStatus(),
     });
-    this.props.setScore( this.game.getScore() );
 
     if (this.game.checkEndOfGame()) {
-      this.props.endGame();
+      this.props.endGame(newScore);
     }
+
+    this.props.setScore(newScore);
   };
 
   closeAllCards = () => {
@@ -63,6 +67,21 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
     this.setState({
       cardsStatus: this.game.getCardsStatus(),
     });
+  };
+
+  restartGame = () => {
+    if (this.timerId) {
+      clearTimeout(this.timerId);
+    }
+    this.game = new Game();
+
+    this.setState({
+      cards: this.game.getCards(),
+      cardsStatus: this.game.getCardsStatus(),
+    });
+    this.props.setScore(0);
+
+    this.timerId = setTimeout(this.closeAllCards, cardDisplayTimeInMs);
   };
 }
 

@@ -11,7 +11,7 @@ export default class StartPage extends React.Component<StartPageProps, StartPage
         <Container>
           <img src={require("../../../img/StartGame.png")}/>
           <Title>Memory Game</Title>
-          <Button data-tid="NewGame-startGame" onClick={this.props.onStartGameClick} text="Начать игру"/>
+          <div data-tid="NewGame-startGame"><Button onClick={this.props.onStartGameClick} text="Начать игру"/></div>
         </Container>
     );
   }

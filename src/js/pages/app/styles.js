@@ -1,7 +1,7 @@
 import styled from 'styled-components';
+import {columnWidth} from '../../commons/globalParams';
 
 const backgroundColor = '#1C6F2F';
-const columnWidth = 900;
 
 export const Background = styled.div`
   width: 100%;

@@ -13,4 +13,5 @@ export const Title = styled.h2`
   color: #fff;
   margin: 20px 0 30px 0;
   text-align: center;
+  text-transform: uppercase;
 `;

@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledButton = styled.button.attrs({
-  target: '_blank',
-})`
+export const StyledButton = styled.button`
   border: 0;
 
   height: 42px;
@@ -12,7 +10,8 @@ export const StyledButton = styled.button.attrs({
   border-radius: 4px;
   text-align: center;
   font-size: 16px;
-  font-family: 'OpenSansBold';
+  font-family: OpenSans;
+  font-weight: bold;
   letter-spacing: 0;
   padding: 0 20px;
   cursor: pointer;

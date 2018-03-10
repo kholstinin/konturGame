@@ -1,6 +1,11 @@
 //@flow
 
+export const columnWidth = 900;
+
 export const numberOfCards = 18;
-export const numberOfPairs = 18 / 2;
+export const numberOfPairs = numberOfCards / 2;
 export const numberOfCardsInRow = 6;
+
 export const scoreMultiplier = 42;
+
+export const cardDisplayTimeInMs = 5000;

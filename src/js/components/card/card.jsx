@@ -2,18 +2,18 @@
 import type {CardProps, CardState} from './typings';
 
 import React from 'react';
-import {CardShirt, CardImage} from './styles';
+import {CardShirt, CardImage, CardWrapper} from './styles';
 
 import {closed} from '../../commons/globalConsts';
 
 class Card extends React.Component<CardProps, CardState> {
   render() {
-    const {status} = this.props;
+    const {status, cardName} = this.props;
     return (
-        <div onClick={this.openCard}>
-          <CardShirt status={status} src={require('../../../img/CardBack.png')}/>
-          <CardImage status={status} src={require(`../../../img/cards/${this.props.cardName}.png`)} />
-        </div>
+        <CardWrapper onClick={this.openCard}>
+          <CardShirt alt='Card shirt' status={status} src={require('../../../img/CardBack.png')}/>
+          <CardImage alt={cardName} status={status} src={require(`../../../img/cards/${cardName}.png`)} />
+        </CardWrapper>
     );
   }
 
