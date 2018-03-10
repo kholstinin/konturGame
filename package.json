@@ -1,15 +1,14 @@
 {
   "name": "kontur",
   "version": "1.0.0",
-  "description": "",
+  "description": "Kontur test excercise",
   "main": "index.js",
   "scripts": {
     "test": "jest",
     "serve": "webpack-dev-server --mode development",
     "build": "node_modules/.bin/webpack --mode development -d",
     "watch": "node_modules/.bin/webpack --mode development -w",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
+    "prod": "node_modules/.bin/webpack --mode production -d",
     "flow": "flow"
   },
   "author": "kholstinin.da@gmail.com",
