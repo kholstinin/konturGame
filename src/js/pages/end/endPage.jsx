@@ -10,7 +10,7 @@ export default class EndPage extends React.Component<EndPageProps, EndPageState>
   render() {
     return (
         <Container>
-          <img src="./static/img/EndGame.png"/>
+          <img src={require('../../../img/EndGame.png')}/>
           <Title>Поздравляем!<br/> Ваш итоговый счет {this.props.score}</Title>
           <Button onClick={this.props.onTryAgainClick} text="Ещё раз"/>
         </Container>

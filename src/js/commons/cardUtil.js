@@ -8,7 +8,6 @@ export default class Cards {
   numberOfCards = 9;
   amountOfValues = this.values.length;
   amountOfSuits = this.suits.length;
-  openedCards = 0;
 
   constructor() {
     this.__generateCards();
@@ -45,14 +44,6 @@ export default class Cards {
 
   getCards(): Array<string> {
     return this.cards
-  }
-
-  checkEndOfGame(): boolean {
-    return this.openedCards === this.numberOfCards;
-  }
-
-  cardOpen(): void {
-    this.openedCards++;
   }
 
   shuffleCards(): void {

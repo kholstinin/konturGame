@@ -1,6 +1,6 @@
 //@flow
 export type CardProps = {
-  path: string,
+  cardName: string,
   onCardClick: (cardName: string, closeFunc: () => void) => void,
 };
 

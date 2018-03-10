@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
-export const StyledButton = styled.button`
+export const StyledButton = styled.button.attrs({
+  target: '_blank',
+})`
   border: 0;
 
   height: 42px;

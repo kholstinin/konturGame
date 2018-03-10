@@ -1,7 +1,7 @@
-import Cards from '../js/commons/cardUtil';
+import Cards from '../src/js/commons/cardUtil';
 
 const cards = new Cards();
 
-test('should return arr of cards', () => {
-  expect(cards.getCards()).toBe([]);
+test('Должен возвращать массив длиной 18', () => {
+  expect(cards.getCards()).toHaveLength(18);
 });
