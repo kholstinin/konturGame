@@ -4,6 +4,8 @@ import type {CardProps, CardState} from './typings';
 import React from 'react';
 import {CardShirt, CardImage} from './styles';
 
+import {closed} from '../../commons/globalConsts';
+
 class Card extends React.Component<CardProps, CardState> {
   render() {
     const {status} = this.props;
@@ -16,8 +18,8 @@ class Card extends React.Component<CardProps, CardState> {
   }
 
   openCard = () => {
-    if (this.props.status === 'closed') {
-      this.props.onCardClick(this.props.cardIndex, this.props.cardName);
+    if (this.props.status === closed) {
+      this.props.onCardClick(this.props.cardName, this.props.cardIndex);
     }
   };
 }

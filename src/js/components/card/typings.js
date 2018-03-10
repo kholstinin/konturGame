@@ -1,9 +1,13 @@
 //@flow
+import type {TCardStatus} from '../../commons/commonTypings';
+
 export type CardProps = {
   cardName: string,
-  onCardClick: (cardName: string, closeFunc: () => void) => void,
+  cardIndex: number,
+  status: TCardStatus,
+  onCardClick: (cardName: string, cardIndex: number) => void,
 };
 
 export type CardState = {
-  imagePath: string,
+
 };
