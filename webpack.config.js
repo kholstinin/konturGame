@@ -1,4 +1,3 @@
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path');
 
@@ -21,6 +20,10 @@ const config = {
           name: 'img/[name].[ext]'
         },
       },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
+        loader: 'file-loader',
+      }
     ],
   },
   devtool: 'source-map',
