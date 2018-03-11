@@ -23,6 +23,9 @@ const config = {
       {
         test: /\.(eot|svg|ttf|woff|woff2|otf)$/,
         loader: 'file-loader',
+        options: {
+          name: 'fonts/[name].[ext]'
+        },
       }
     ],
   },
