@@ -1,19 +1,12 @@
 //@flow
 import type {TCardStatus, TOpenedCard, TCardState} from '../commons/commonTypings';
 
-import Cards from './cardUtil';
+import CardsGenerator from './cardsGenerator';
+import {isAllElementsInArrayEqual} from '../commons/utils'
 import {closed, opened, completed} from '../commons/globalConsts';
 import {numberOfCards, numberOfPairs, scoreMultiplier} from '../commons/globalParams';
 
 export interface IGame {
-  _pairsTotal: number;
-  _completedPairs: number;
-  score: number;
-  _scoreMultiplier: number;
-  _cards: Array<string>;
-  _cardsStatus: TCardState;
-  openedCard: ?TOpenedCard;
-
   getCards(): Array<string>;
   getCardsStatus(): TCardState;
   getScore(): number;
@@ -22,7 +15,9 @@ export interface IGame {
   __pairCompleted(): void;
   __pairFailed(): void;
   openCard(cardName: string, cardIndex: number): void;
+  checkCards(): void;
   checkEndOfGame(): boolean;
+  isCardsOpened(): boolean;
 }
 
 export default class Game implements IGame {
@@ -32,7 +27,8 @@ export default class Game implements IGame {
   _scoreMultiplier: number;
   _cards: Array<string>;
   _cardsStatus: TCardState;
-  openedCard: ?TOpenedCard;
+  openedCards: Array<TOpenedCard>;
+  isCurrentCardsEqual: boolean;
 
   constructor(pairs?: number, initialScore?: number, scoreMultiplierArg?: number) {
     this._pairsTotal = pairs || numberOfPairs;
@@ -40,28 +36,32 @@ export default class Game implements IGame {
     this.score = initialScore || 0;
     this._scoreMultiplier = scoreMultiplierArg || scoreMultiplier;
 
-    this._cards = new Cards().getCards();
-    this.openedCard = null;
+    this._cards = new CardsGenerator().getCards();
+    this.openedCards = [];
     this.__setNewStatusToAllCards(opened);
   }
 
-  getCards() {
+  getCards(): Array<string> {
     return this._cards;
   }
 
-  getCardsStatus() {
+  getCardsStatus(): TCardState {
     return this._cardsStatus;
   }
 
-  getScore() {
+  getScore(): number {
     return this.score;
   }
 
-  closeAllCards() {
+  isCardsOpened(): boolean {
+    return this.openedCards.length > 1;
+  }
+
+  closeAllCards(): void {
     this.__setNewStatusToAllCards(closed);
   };
 
-  __setNewStatusToAllCards(newStatus: TCardStatus) {
+  __setNewStatusToAllCards(newStatus: TCardStatus): void {
     const result = {};
 
     for (let index = 0; index < numberOfCards; index++) {
@@ -86,24 +86,37 @@ export default class Game implements IGame {
     }
   }
 
-  openCard(cardName: string, cardIndex: number) {
-    if (this.openedCard) {
+  checkCards(): void {
+    if (this.openedCards.length > 1) {
       let newStatus = closed;
 
-      if (this.openedCard.cardName === cardName) {
+      if (this.isCurrentCardsEqual) {
         this.__pairCompleted();
         newStatus = completed;
       } else {
         this.__pairFailed();
       }
 
-      this._cardsStatus[this.openedCard.cardIndex] = newStatus;
-      this._cardsStatus[cardIndex] = newStatus;
+      this.openedCards.forEach(card => {
+        const cardIndex = card.cardIndex;
+        this._cardsStatus[cardIndex] = newStatus;
+      });
 
-      this.openedCard = null;
-    } else {
-      this.openedCard = {cardIndex, cardName};
-      this._cardsStatus[cardIndex] = opened;
+      this.isCurrentCardsEqual = false;
+      this.openedCards = [];
+    }
+  }
+
+  isOpenedCardsEqual() {
+    return isAllElementsInArrayEqual(this.openedCards, 'cardName');
+  }
+
+  openCard(cardName: string, cardIndex: number): void {
+    this._cardsStatus[cardIndex] = opened;
+    this.openedCards.push({cardIndex, cardName});
+
+    if (this.openedCards.length > 1) {
+      this.isCurrentCardsEqual = this.isOpenedCardsEqual();
     }
   }
 

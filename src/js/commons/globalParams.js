@@ -8,4 +8,5 @@ export const numberOfCardsInRow = 6;
 
 export const scoreMultiplier = 42;
 
-export const cardDisplayTimeInMs = 5000;
+export const initialCardDisplayTimeInMs = 5000;
+export const cardDisplayTimeInMs = 300;

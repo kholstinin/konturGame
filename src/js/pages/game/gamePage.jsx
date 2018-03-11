@@ -5,14 +5,19 @@ import React from 'react';
 import {Header, HeaderText, GameField, Wrapper} from './styles';
 import Card from '../../components/card/card.jsx';
 
-import {cardDisplayTimeInMs} from '../../commons/globalParams';
+import {
+  initialCardDisplayTimeInMs,
+  cardDisplayTimeInMs,
+} from '../../commons/globalParams';
 
 import {IGame} from '../../logic/game';
 import Game from '../../logic/game';
 
 class GamePage extends React.Component<GamePageProps, GamePageState> {
   game: IGame;
-  timerId: TimeoutID;
+  initialTimerId: ?TimeoutID;
+  timerIdOfOpenedCards: ?TimeoutID;
+  calculateFn: () => void;
 
   constructor() {
     super();
@@ -23,14 +28,15 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
       cardsStatus: this.game.getCardsStatus(),
     };
 
-    this.timerId = setTimeout(this.closeAllCards, cardDisplayTimeInMs);
+    this.initialTimerId = setTimeout(this.closeAllCards,
+        initialCardDisplayTimeInMs);
   }
 
   render() {
     return (
         <Wrapper>
           <Header>
-              <HeaderText onClick={this.restartGame}>Начать заново</HeaderText>
+            <HeaderText onClick={this.restartGame}>Начать заново</HeaderText>
             <div data-tid='Menu-scores'>Очки: {this.props.score}</div>
           </Header>
           <GameField>
@@ -47,19 +53,41 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
   }
 
   openCard = (cardName: string, cardIndex: number) => {
-    this.game.openCard(cardName, cardIndex);
-    const newScore = this.game.getScore();
+    if (this.timerIdOfOpenedCards) {
+      clearTimeout(this.timerIdOfOpenedCards);
+      this.calculateFn();
+      this.timerIdOfOpenedCards = null;
+    }
 
+    this.game.openCard(cardName, cardIndex);
     this.setState({
-      cards: this.game.getCards(),
       cardsStatus: this.game.getCardsStatus(),
     });
 
-    if (this.game.checkEndOfGame()) {
-      this.props.endGame(newScore);
-    }
+    this.calculateFn = () => {
+      this.game.checkCards();
 
-    this.props.setScore(newScore);
+      const newScore = this.game.getScore();
+      this.setState({
+        cardsStatus: this.game.getCardsStatus(),
+      });
+
+      if (this.game.checkEndOfGame()) {
+        this.props.endGame(newScore);
+      }
+
+      this.props.setScore(newScore);
+      this.timerIdOfOpenedCards = null;
+    };
+
+    if (this.game.isCardsOpened()) {
+      if (this.game.isCurrentCardsEqual) {
+        this.calculateFn();
+      } else {
+        this.timerIdOfOpenedCards = setTimeout(this.calculateFn,
+            cardDisplayTimeInMs);
+      }
+    }
   };
 
   closeAllCards = () => {
@@ -70,9 +98,15 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
   };
 
   restartGame = () => {
-    if (this.timerId) {
-      clearTimeout(this.timerId);
+    if (this.initialTimerId) {
+      clearTimeout(this.initialTimerId);
     }
+    if (this.timerIdOfOpenedCards) {
+      clearTimeout(this.timerIdOfOpenedCards);
+    }
+    this.timerIdOfOpenedCards = null;
+    this.initialTimerId = null;
+
     this.game = new Game();
 
     this.setState({
@@ -81,7 +115,8 @@ class GamePage extends React.Component<GamePageProps, GamePageState> {
     });
     this.props.setScore(0);
 
-    this.timerId = setTimeout(this.closeAllCards, cardDisplayTimeInMs);
+    this.initialTimerId = setTimeout(this.closeAllCards,
+        initialCardDisplayTimeInMs);
   };
 }
 

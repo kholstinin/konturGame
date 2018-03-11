@@ -2,7 +2,7 @@
 import {getRndInRange, shuffleArray} from '../commons/utils';
 import {numberOfCards} from '../commons/globalParams';
 
-export default class Cards {
+export default class CardsGenerator {
   _cards = [];
   _values =  ["5", "6", "7", "8", "9" ,"A", "J", "K", "Q"];
   _suits = ["D", "H", "S", "C"];
